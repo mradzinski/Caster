@@ -1,0 +1,46 @@
+apply plugin: 'com.android.library'
+
+ext {
+    supportVersion = '27.1.1'
+    castVersion = '15.0.1'
+    queryVersion = '0.25.9'
+}
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 27
+        versionCode 7
+        versionName '1.0.8'
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+configurations.all {
+    // Force the usage of the same support library version.
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion supportVersion
+            }
+        }
+    }
+}
+
+dependencies {
+    api "com.android.support:appcompat-v7:$supportVersion"
+    api "com.android.support:support-v4:$supportVersion"
+    api "com.android.support:mediarouter-v7:$supportVersion"
+    api "com.google.android.gms:play-services-cast-framework:$castVersion"
+}

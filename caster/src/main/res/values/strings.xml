@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Caster</string>
+    <string name="caster_introduction_text">Use this button to connect with Chromecast</string>
+</resources>

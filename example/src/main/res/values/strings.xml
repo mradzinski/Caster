@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CasterExample</string>
+    <string name="play">Play</string>
+    <string name="resume">Resume</string>
+</resources>
