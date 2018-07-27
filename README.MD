@@ -1,5 +1,7 @@
 # Caster
-Caster is a small Android library that provides a simple media player for Chromecast. It's fully consistent with [Google Cast v3][Cast_v3].
+[![](https://jitpack.io/v/mradzinski/Caster.svg)](https://jitpack.io/#mradzinski/Caster)
+
+Caster is a small Android library that provides a media player for Chromecast. It's fully compliant with [Google Cast v3][Cast_v3].
 ## Installation
 Add the following repository and dependency to `build.gradle` file of your project (repository to the main gradle file, dependency to the app module):
 ```gradle
@@ -9,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.mradzinski:caster:1.1.0'
+    implementation 'com.github.mradzinski:Caster:1.1.0'
 }
 ```
 ## Usage
