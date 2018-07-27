@@ -15,7 +15,8 @@ dependencies {
 }
 ```
 ## Usage
-Caster requires Google Play Services and I assume that the target device has it installed (if not this example won't work). In a bigger project I suggest you check it using [GoogleApiAvailability][Google_availability]. **If you need a working example you can check the project included with the library.**
+Caster requires Google Play Services and I assume that the target device has it installed (if not this example won't work). In a bigger project I suggest you check it using [GoogleApiAvailability][Google_availability].
+**If you need a Caster's working example you can check the project included with the library.**
 
 First, you need to initialize a Caster instance in every Activity you want to use it in:
 ```java
@@ -29,26 +30,28 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 ```
-If you want to add a [Mini Controller widget][Mini_Controller_Info], you can do it like this:
+If you want to add a [Mini Controller widget][Mini_Controller_Info]:
 ```java
 caster = Caster.create(this)
     .withMiniController();
 ```
-Alternatively you can place it in your layout XML, just like in the official [Google Cast example][Mini_Controller_Implementation] (remember to change fill_parent to match_parent 😆).
+Alternatively you can place it in your layout XML, just like in the official [Google Cast example][Mini_Controller_Implementation] (remember to change fill_parent to match_parent!).
 
-To support device discovery, add a menu item in overriden `onCreateOptionsMenu` method:
+To support device discovery, add a menu item in an overriden `onCreateOptionsMenu` method on your Activity:
 ```java
 @Override
 public boolean onCreateOptionsMenu(Menu menu) {
     super.onCreateOptionsMenu(menu);
-    caster.addMediaRouteMenuItem(menu);
+
+    caster.addMediaRouteMenuItem(menu); // <--
+
     getMenuInflater().inflate(R.menu.your_menu, menu);
     return true;
 }
 ```
 Automatically, [Introduction Overlay][Introduction_Overlay] (with text "Use this button to connect with Chromecast") will be shown at the first device discovery. If you want to change it or add another language override string with id `caster_introduction_text` in a XML resource.
 
-You can also add a discovery button anywhere else by placing it in your layout XML:
+You can also add a discovery button anywhere else by placing the official MediaRouteButton in an XML layout:
 ```xml
 <android.support.v7.app.MediaRouteButton
     android:id="@+id/media_route_button"
@@ -60,7 +63,7 @@ And then set in up in your Activity:
 MediaRouteButton mediaRouteButton = (MediaRouteButton) findViewById(R.id.media_route_button);
 caster.setUpMediaRouteButton(mediaRouteButton);
 ```
-Althugh not necessary (you can manually setup everything), you can add the above functionality (except `MediaRouteButton`) simply by extending `CasterActivity`. It will add a `caster` field and set up the rest:
+Althugh not necessary (you can manually setup everything), you can add the above functionality (except `MediaRouteButton`) simply by extending `CasterActivity`. It will add a `caster` field and set up the rest for you:
 ```java
 public class MainActivity extends CasterActivity {
     @Override
@@ -76,17 +79,20 @@ public class MainActivity extends CasterActivity {
 All media player actions are included in a `CasterPlayer` object, which you can access by calling `caster.getPlayer()`.
 When you are connected to the device, you can play media the following way:
 ```java
-MediaData mediaData = new MediaData.Builder("http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4")
-    .setStreamType(MediaData.STREAM_TYPE_BUFFERED) //required
-    .setContentType("videos/mp4") //required
+MediaData mediaData = new MediaData.Builder(VIMEO_URL)
+    .setStreamType(MediaData.STREAM_TYPE_BUFFERED)
+    .setContentType("application/x-mpegURL") // Or "videos/mp4"... or any supported content type
     .setMediaType(MediaData.MEDIA_TYPE_MOVIE)
-    .setTitle("Sample title")
-    .setSubtitle("Sample subtitle")
-    .addPhotoUrl("https://peach.blender.org/wp-content/uploads/bbb-splash.png?x11217")
+    .setTitle("Two birds, many stones.")
+    .setDescription("Isaac searches for Rebekah to retrieve Arachnid's stolen XP.")
+    .setThumbnailUrl("...")
+    .setPlaybackRate(MediaData.PLAYBACK_RATE_NORMAL)
+    .setAutoPlay(true)
     .build();
+
 caster.getPlayer().loadMediaAndPlay(mediaData);
 ```
-Alternativly you can use `loadMediaAndPlay(MediaInfo, autoPlay, position)` similar to [Google Cast example][Cast_load_media].
+Alternativly you can use `loadMediaAndPlay(MediaInfo, autoPlay, position, playbackRate)` similar to [Google Cast example][Cast_load_media].
 
 To react on Chromecast connect and disconnect events, you can simply register a listener:
 ```java
@@ -106,7 +112,7 @@ caster.setOnConnectChangeListener(new Caster.OnConnectChangeListener() {
 In case the library doesn't fit you, I left the possibility to change everything like in Google Cast v3.
 You can set a receiver ID or even the whole `CastOptions` in your Application class:
 ```java
-Caster.configure(receiverId); //or
+Caster.configure(receiverId); // or
 Caster.configure(customCastOptions);
 ```
 Get `CastContext` by calling:
