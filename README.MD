@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.mradzinski:Caster:1.2.1'
+    implementation 'com.github.mradzinski:Caster:1.2.2'
 }
 ```
 ## Usage
@@ -53,7 +53,9 @@ public boolean onCreateOptionsMenu(Menu menu) {
     return true;
 }
 ```
-Automatically, [Introduction Overlay][Introduction_Overlay] (with text "Use this button to connect with Chromecast") will be shown at the first device discovery. If you want to change it or add another language override the string with id `caster_introduction_text` in an XML resource.
+Optionally, An [Introduction Overlay][Introduction_Overlay] (with text "Touch to cast media to your TV") will be shown
+at the first device discovery if requested. If you want to change it or add another language override the string with
+id `caster_introduction_text` in an XML resource. More information about overridable attributes can be found [here][Introductory]
 
 You can also add a discovery button anywhere else by placing the official MediaRouteButton in an XML layout:
 ```xml
@@ -62,7 +64,7 @@ You can also add a discovery button anywhere else by placing the official MediaR
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
 ```
-And then set in up in your Activity:
+And then set in up in your Activity (optionally showing an [Introduction Overlay][Introduction_Overlay]):
 ```java
 MediaRouteButton mediaRouteButton = (MediaRouteButton) findViewById(R.id.media_route_button);
 caster.setupMediaRouteButton(mediaRouteButton, true); // To display an Introductory Overlay
@@ -185,3 +187,4 @@ A sample app for Caster is included withing this repository. Please feel free to
    [Cast_load_media]: <https://developers.google.com/cast/docs/android_sender_integrate#load_media>
    [Introduction_Overlay]: <https://developers.google.com/cast/docs/design_checklist/cast-button#prompting>
    [License]: <https://github.com/mradzinski/Caster/blob/master/LICENSE>
+   [Introductory]: <https://developers.google.com/android/reference/com/google/android/gms/cast/framework/IntroductoryOverlay>
