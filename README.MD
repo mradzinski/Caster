@@ -44,9 +44,12 @@ To support device discovery, add a menu item in an overriden `onCreateOptionsMen
 public boolean onCreateOptionsMenu(Menu menu) {
     super.onCreateOptionsMenu(menu);
 
-    caster.addMediaRouteMenuItem(menu); // <--
+    caster.addMediaRouteMenuItem(menu, true); // To display an Introductory Overlay
+    // Or
+    caster.addMediaRouteMenuItem(menu, false); // To avoid displaying an Introductory Overlay
 
     getMenuInflater().inflate(R.menu.your_menu, menu);
+
     return true;
 }
 ```
@@ -62,7 +65,9 @@ You can also add a discovery button anywhere else by placing the official MediaR
 And then set in up in your Activity:
 ```java
 MediaRouteButton mediaRouteButton = (MediaRouteButton) findViewById(R.id.media_route_button);
-caster.setUpMediaRouteButton(mediaRouteButton);
+caster.setUpMediaRouteButton(mediaRouteButton, true); // To display an Introductory Overlay
+// Or
+caster.setUpMediaRouteButton(mediaRouteButton, false); // To avoid displaying an Introductory Overlay
 ```
 Althugh not necessary (you can manually setup everything), you can add the above functionality (except `MediaRouteButton`) simply by extending `CasterActivity`. It will add a `caster` field and set up the rest for you:
 ```java
