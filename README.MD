@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.mradzinski:Caster:1.2.0'
+    implementation 'com.github.mradzinski:Caster:1.2.1'
 }
 ```
 ## Usage
@@ -65,9 +65,9 @@ You can also add a discovery button anywhere else by placing the official MediaR
 And then set in up in your Activity:
 ```java
 MediaRouteButton mediaRouteButton = (MediaRouteButton) findViewById(R.id.media_route_button);
-caster.setUpMediaRouteButton(mediaRouteButton, true); // To display an Introductory Overlay
+caster.setupMediaRouteButton(mediaRouteButton, true); // To display an Introductory Overlay
 // Or
-caster.setUpMediaRouteButton(mediaRouteButton, false); // To avoid displaying an Introductory Overlay
+caster.setupMediaRouteButton(mediaRouteButton, false); // To avoid displaying an Introductory Overlay
 ```
 Althugh not necessary (you can manually setup everything), you can add the above functionality (except `MediaRouteButton`) simply by extending `CasterActivity`. It will add a `caster` field and set up the rest for you:
 ```java
