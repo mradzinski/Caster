@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.mradzinski:Caster:1.1.0'
+    implementation 'com.github.mradzinski:Caster:1.2.0'
 }
 ```
 ## Usage
@@ -32,10 +32,11 @@ public class MainActivity extends AppCompatActivity {
 ```
 If you want to add a [Mini Controller widget][Mini_Controller_Info]:
 ```java
-caster = Caster.create(this)
-    .withMiniController();
+caster.addMiniController() // Or
+caster.addMiniController(R.layout.custom_mini_controller)
 ```
 Alternatively you can place it in your layout XML, just like in the official [Google Cast example][Mini_Controller_Implementation] (remember to change fill_parent to match_parent!).
+You can also have a custom mini controller (more on this later).
 
 To support device discovery, add a menu item in an overriden `onCreateOptionsMenu` method on your Activity:
 ```java
@@ -130,6 +131,40 @@ caster.setOnCastSessionUpdatedListener(new Caster.OnCastSessionUpdatedListener()
         }
     }
 });
+```
+### Styling
+Caster allows for custom styling of the mini controller and the expanded controls activity. For styling the mini controller
+you must add your own mini controller XML layout and pass it to your Caster instance.
+```xml
+<fragment
+    android:id="@+id/caster_mini_controller"
+    class="com.google.android.gms.cast.framework.media.widget.MiniControllerFragment"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    app:castProgressBarColor="@color/green"
+    app:castBackground="@color/dark_gray"
+    app:castButtonColor="@color/white"
+    app:castTitleTextAppearance="@style/MiniControllerTextAppearace"
+    app:castSubtitleTextAppearance="@style/MiniControllerTextAppearace"/>
+
+    <!-- More styling props are available at https://developers.google.com/cast/docs/android_sender_advanced#customize-theme-mini-controller -->
+```
+```java
+caster.addMiniController(R.layout.custom_mini_controller);
+```
+For styling the expanded controls activity, you must build an instance of the `ExpandedControlsStyle` class and pass it to
+your Caster instance before any connection is available.
+```java
+ExpandedControlsStyle style = new ExpandedControlsStyle.Builder()
+        .setSeekbarLineColor(getResources().getColor(R.color.green))
+        .setSeekbarThumbColor(getResources().getColor(R.color.white))
+        .setStatusTextColor(getResources().getColor(R.color.green))
+        .build();
+
+caster.setExpandedPlayerStyle(style);
 ```
 ### License
 [MIT][License]
