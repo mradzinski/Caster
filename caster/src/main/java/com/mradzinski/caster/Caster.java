@@ -32,6 +32,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Core class of Caster. It manages buttons/widgets and gives access to the media player.
@@ -54,7 +56,7 @@ public class Caster implements CasterPlayer.OnMediaLoadedListener {
     private CastSession castSession;
     private CasterPlayer casterPlayer;
     private WeakReference<Activity> activity;
-    private IntroductoryOverlay introductionOverlay;
+    private List<IntroductoryOverlay> introductionOverlays = new ArrayList<>();
 
     private boolean deliveredFinishStatus = false;
     private boolean deliveredPlayingVideo = false;
@@ -198,34 +200,51 @@ public class Caster implements CasterPlayer.OnMediaLoadedListener {
     }
 
     /**
-     * Adds the discovery menu item on a toolbar and creates Introduction Overlay
-     * Should be used in {@link Activity#onCreateOptionsMenu(Menu)}. <b>Must be run on UiThread.</b>
+     * Adds the discovery menu item on a toolbar.
+     * Should be used in {@link Activity#onCreateOptionsMenu(Menu)}. Optionally,
+     * you can decide if an {@link IntroductoryOverlay} should be shown the first time the user
+     * sees this button and a Chromecast device is discoverable.
+     *
+     * <p><b>Must be run on UiThread.</b></p>
      *
      * @param menu Menu in which MenuItem should be added
+     * @param withIntroductionOverlay True if an {@link IntroductoryOverlay} should be
+     *                                prepared and displayed for this button if needed. False otherwise.
      */
     @UiThread
-    public void addMediaRouteMenuItem(@NonNull Menu menu) {
+    public void addMediaRouteMenuItem(@NonNull Menu menu, Boolean withIntroductionOverlay) {
         Activity theActivity = activity.get();
         if (theActivity == null) return;
 
         theActivity.getMenuInflater().inflate(R.menu.caster_discovery, menu);
+
         setUpMediaRouteMenuItem(menu);
+
         MenuItem menuItem = menu.findItem(R.id.caster_media_route_menu_item);
-        introductionOverlay = createIntroductionOverlay(menuItem);
+
+        if (withIntroductionOverlay) introductionOverlays.add(createIntroductionOverlay(menuItem));
     }
 
     /**
-     * Makes {@link MediaRouteButton} react to discovery events.
-     * <b>Must be run on UiThread.</b>
+     * Makes a {@link MediaRouteButton} react to discovery events. You can have as many
+     * {@link MediaRouteButton} as neededon your XML, but normally one is enough. Optionally,
+     * you can decide if an {@link IntroductoryOverlay} should be shown the first time the user
+     * sees this button and a Chromecast device is discoverable.
      *
-     * @param mediaRouteButton Button to be set up
+     * <p><b>Must be run on UiThread.</b></p>
+     *
+     * @param mediaRouteButton Your MediaRouteButton view
+     * @param withIntroductionOverlay True if an {@link IntroductoryOverlay} should be
+     *                                prepared and displayed for this button if needed. False otherwise.
      */
     @UiThread
-    public void setUpMediaRouteButton(@NonNull MediaRouteButton mediaRouteButton) {
+    public void setupMediaRouteButton(@NonNull MediaRouteButton mediaRouteButton, Boolean withIntroductionOverlay) {
         Activity theActivity = activity.get();
         if (theActivity == null) return;
 
         CastButtonFactory.setUpMediaRouteButton(theActivity, mediaRouteButton);
+
+        if (withIntroductionOverlay) introductionOverlays.add(createIntroductionOverlay(mediaRouteButton));
     }
 
     /**
@@ -327,7 +346,7 @@ public class Caster implements CasterPlayer.OnMediaLoadedListener {
         return new CastStateListener() {
             @Override
             public void onCastStateChanged(int state) {
-                if (state != CastState.NO_DEVICES_AVAILABLE && introductionOverlay != null) {
+                if (state != CastState.NO_DEVICES_AVAILABLE && introductionOverlays.size() > 0) {
                     showIntroductionOverlay();
                 }
             }
@@ -335,7 +354,11 @@ public class Caster implements CasterPlayer.OnMediaLoadedListener {
     }
 
     private void showIntroductionOverlay() {
-        if (introductionOverlay != null) introductionOverlay.show();
+        if (introductionOverlays.size() > 0) {
+            for (IntroductoryOverlay io : introductionOverlays) {
+                io.show();
+            }
+        }
     }
 
     private SessionManagerListener<CastSession> createSessionManagerListener() {
@@ -484,6 +507,16 @@ public class Caster implements CasterPlayer.OnMediaLoadedListener {
         if (theActivity == null) return null;
 
         return new IntroductoryOverlay.Builder(theActivity, menuItem)
+                .setTitleText(R.string.caster_introduction_text)
+                .setSingleTime()
+                .build();
+    }
+
+    private IntroductoryOverlay createIntroductionOverlay(MediaRouteButton button) {
+        Activity theActivity = activity.get();
+        if (theActivity == null) return null;
+
+        return new IntroductoryOverlay.Builder(theActivity, button)
                 .setTitleText(R.string.caster_introduction_text)
                 .setSingleTime()
                 .build();

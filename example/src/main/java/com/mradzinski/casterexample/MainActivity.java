@@ -112,13 +112,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpMediaRouteButton() {
         MediaRouteButton mediaRouteButton = findViewById(R.id.media_route_button);
-        caster.setUpMediaRouteButton(mediaRouteButton);
+        caster.setupMediaRouteButton(mediaRouteButton, false);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        caster.addMediaRouteMenuItem(menu);
+        caster.addMediaRouteMenuItem(menu, true);
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }

@@ -29,7 +29,7 @@ public abstract class CasterActivity extends AppCompatActivity {
             caster.addMiniController();
         }
 
-        caster.addMediaRouteMenuItem(menu);
+        caster.addMediaRouteMenuItem(menu, true);
 
         return true;
     }

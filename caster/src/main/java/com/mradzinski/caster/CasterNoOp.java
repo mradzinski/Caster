@@ -23,12 +23,12 @@ class CasterNoOp extends Caster {
     }
 
     @Override
-    public void addMediaRouteMenuItem(@NonNull Menu menu) {
+    public void addMediaRouteMenuItem(@NonNull Menu menu, Boolean withIntroductionOverlay) {
         //no-op
     }
 
     @Override
-    public void setUpMediaRouteButton(@NonNull MediaRouteButton mediaRouteButton) {
+    public void setupMediaRouteButton(@NonNull MediaRouteButton mediaRouteButton, Boolean withIntroduction) {
         //no-op
     }
 
