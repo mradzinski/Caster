@@ -15,7 +15,7 @@ dependencies {
 }
 ```
 ## Usage
-Caster requires Google Play Services and I assume that the target device has it installed (if not this example won't work). In a bigger project I suggest you check it using [GoogleApiAvailability][Google_availability].
+Caster requires Google Play Services and I assume that the target device has it installed (if not this example won't work).
 **If you need a Caster's working example you can check the project included with the library.**
 
 First, you need to initialize a Caster instance in every Activity you want to use it in:
@@ -50,7 +50,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
     return true;
 }
 ```
-Automatically, [Introduction Overlay][Introduction_Overlay] (with text "Use this button to connect with Chromecast") will be shown at the first device discovery. If you want to change it or add another language override string with id `caster_introduction_text` in a XML resource.
+Automatically, [Introduction Overlay][Introduction_Overlay] (with text "Use this button to connect with Chromecast") will be shown at the first device discovery. If you want to change it or add another language override the string with id `caster_introduction_text` in an XML resource.
 
 You can also add a discovery button anywhere else by placing the official MediaRouteButton in an XML layout:
 ```xml
@@ -93,9 +93,9 @@ MediaData mediaData = new MediaData.Builder(VIMEO_URL)
 
 caster.getPlayer().loadMediaAndPlay(mediaData);
 ```
-Alternativly you can use `loadMediaAndPlay(MediaInfo, autoPlay, position, playbackRate)` similar to [Google Cast example][Cast_load_media].
+Alternativly you can use `loadMediaAndPlay(MediaInfo, autoPlay, position, playbackRate)` similar to [Google Cast example][Cast_load_media], though this is more limited and less flexible.
 
-To react on Chromecast connect and disconnect events, you can simply register a listener:
+To react to Chromecast connect and disconnect events, you can simply register a listener:
 ```java
 caster.setOnConnectChangeListener(new Caster.OnConnectChangeListener() {
     @Override
@@ -110,11 +110,12 @@ caster.setOnConnectChangeListener(new Caster.OnConnectChangeListener() {
 });
 ```
 ### Custom usage
-In case the library doesn't fit you, I left the possibility to change everything like in Google Cast v3.
-You can set a receiver ID or even the whole `CastOptions` in your Application class:
+In case the library doesn't fit you, there's the possibility to change everything like in Google Cast v3.
+You can set a receiver ID or even the whole `CastOptions` in your `Application` class:
 ```java
-Caster.configure(receiverId); // or
-Caster.configure(customCastOptions);
+Caster.configure(receiverId); // Or
+Caster.configure(customCastOptions); // Rr
+Caster.configure(launchOptions)
 ```
 Get `CastContext` by calling:
 ```java
@@ -132,7 +133,7 @@ caster.setOnCastSessionUpdatedListener(new Caster.OnCastSessionUpdatedListener()
     }
 });
 ```
-### Styling
+## Styling
 Caster allows for custom styling of the mini controller and the expanded controls activity. For styling the mini controller
 you must add your own mini controller XML layout and pass it to your Caster instance.
 ```xml
@@ -166,7 +167,10 @@ ExpandedControlsStyle style = new ExpandedControlsStyle.Builder()
 
 caster.setExpandedPlayerStyle(style);
 ```
-### License
+## Sample
+A sample app for Caster is included withing this repository. Please feel free to check it out before filing any issues :)
+
+## License
 [MIT][License]
 
 [//]: #
@@ -174,6 +178,5 @@ caster.setExpandedPlayerStyle(style);
    [Mini_Controller_Info]: <https://developers.google.com/cast/docs/design_checklist/sender#sender-mini-controller>
    [Mini_Controller_Implementation]: <https://developers.google.com/cast/docs/android_sender_integrate#add_mini_controller>
    [Cast_load_media]: <https://developers.google.com/cast/docs/android_sender_integrate#load_media>
-   [Google_availability]: <https://developers.google.com/android/reference/com/google/android/gms/common/GoogleApiAvailability>
    [Introduction_Overlay]: <https://developers.google.com/cast/docs/design_checklist/cast-button#prompting>
    [License]: <https://github.com/mradzinski/Caster/blob/master/LICENSE>
