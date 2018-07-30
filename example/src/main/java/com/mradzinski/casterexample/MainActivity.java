@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.mradzinski.caster.Caster;
+import com.mradzinski.caster.ExpandedControlsStyle;
 import com.mradzinski.caster.MediaData;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,7 +24,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        caster = Caster.create(this).withMiniController();
+        caster = Caster.create(this);
+        caster.addMiniController(R.layout.custom_mini_controller);
+
+        ExpandedControlsStyle style = new ExpandedControlsStyle.Builder()
+                .setSeekbarLineColor(getResources().getColor(R.color.green))
+                .setSeekbarThumbColor(getResources().getColor(R.color.white))
+                .setStatusTextColor(getResources().getColor(R.color.green))
+                .build();
+
+        caster.setExpandedPlayerStyle(style);
+
         setUpPlayButton();
         setUpMediaRouteButton();
     }

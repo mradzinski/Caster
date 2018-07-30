@@ -33,12 +33,12 @@ class CasterNoOp extends Caster {
     }
 
     @Override
-    public Caster withMiniController() {
-        return this;
+    public void addMiniController() {
+        //no-op
     }
 
     @Override
-    public void addMiniController() {
+    public void addMiniController(int miniControllerLayout) {
         //no-op
     }
 

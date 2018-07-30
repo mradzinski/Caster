@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<fragment
+    android:id="@+id/caster_mini_controller"
+    class="com.google.android.gms.cast.framework.media.widget.MiniControllerFragment"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    app:castProgressBarColor="@color/green"
+    app:castBackground="@color/dark_gray"
+    app:castButtonColor="@color/white"
+    app:castTitleTextAppearance="@style/MiniControllerTextAppearace"
+    app:castSubtitleTextAppearance="@style/MiniControllerTextAppearace"/>

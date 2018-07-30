@@ -5,9 +5,7 @@
         <item name="castMiniControllerStyle">@style/CustomCastMiniController</item>
         <item name="castIntroOverlayStyle">@style/CustomCastIntroOverlay</item>
         <item name="castExpandedControllerStyle">@style/CustomCastExpandedController</item>
-        <item name="castExpandedControllerToolbarStyle">
-            @style/ThemeOverlay.AppCompat.Dark.ActionBar
-        </item>
+        <item name="castExpandedControllerToolbarStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
     </style>
 
     <style name="CustomCastIntroOverlay" parent="CastIntroOverlay">
@@ -31,5 +29,5 @@
         <item name="castSubtitleTextAppearance">@style/TextAppearance.AppCompat.Caption</item>
     </style>
 
-    <style name="CustomCastExpandedController" parent="CastExpandedController" />
+    <style name="CustomCastExpandedController" parent="CastExpandedController"/>
 </resources>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+<fragment
     android:id="@+id/caster_mini_controller"
     class="com.google.android.gms.cast.framework.media.widget.MiniControllerFragment"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:visibility="gone" />
+    android:visibility="gone"/>

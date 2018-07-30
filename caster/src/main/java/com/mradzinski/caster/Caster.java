@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.cast.CastMediaControlIntent;
+import com.google.android.gms.cast.LaunchOptions;
 import com.google.android.gms.cast.MediaStatus;
 import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
@@ -36,8 +38,12 @@ import java.lang.ref.WeakReference;
  */
 public class Caster implements CasterPlayer.OnMediaLoadedListener {
     private final static String TAG = "Caster";
+
     static String receiverId = CastMediaControlIntent.DEFAULT_MEDIA_RECEIVER_APPLICATION_ID;
-    static CastOptions customCastOptions;
+
+    protected static CastOptions customCastOptions;
+    protected static LaunchOptions customLaunchOptions;
+    protected static ExpandedControlsStyle expandedControlsStyle;
 
     private SessionManagerListener<CastSession> sessionManagerListener;
     private OnConnectChangeListener onConnectChangeListener;
@@ -135,6 +141,16 @@ public class Caster implements CasterPlayer.OnMediaLoadedListener {
     }
 
     /**
+     * Set the custom LaunchOptions. This is a shorthand for setting the full CastOptions object and
+     * will be overriden by them if configured.
+     *
+     * @param launchOptions the custom LaunchOptions object.
+     */
+    public static void configure(@NonNull LaunchOptions launchOptions) {
+        Caster.customLaunchOptions = launchOptions;
+    }
+
+    /**
      * Creates the Caster object.
      *
      * @param activity {@link Activity} in which Caster object is created
@@ -183,7 +199,7 @@ public class Caster implements CasterPlayer.OnMediaLoadedListener {
 
     /**
      * Adds the discovery menu item on a toolbar and creates Introduction Overlay
-     * Should be used in {@link Activity#onCreateOptionsMenu(Menu)}.
+     * Should be used in {@link Activity#onCreateOptionsMenu(Menu)}. <b>Must be run on UiThread.</b>
      *
      * @param menu Menu in which MenuItem should be added
      */
@@ -200,7 +216,7 @@ public class Caster implements CasterPlayer.OnMediaLoadedListener {
 
     /**
      * Makes {@link MediaRouteButton} react to discovery events.
-     * Must be run on UiThread.
+     * <b>Must be run on UiThread.</b>
      *
      * @param mediaRouteButton Button to be set up
      */
@@ -213,32 +229,32 @@ public class Caster implements CasterPlayer.OnMediaLoadedListener {
     }
 
     /**
-     * Adds the Mini Controller at the bottom of Activity's layout.
-     * Must be run on UiThread.
-     *
-     * @return the Caster instance
+     * Adds the standard Mini Controller at the bottom of Activity's layout.
+     * <b>Must be run on UiThread.</b>
      */
-    @UiThread
-    public Caster withMiniController() {
-        addMiniController();
-        return this;
+    public void addMiniController() {
+        addMiniController(R.layout.mini_controller);
     }
 
     /**
-     * Adds the Mini Controller at the bottom of Activity's layout
-     * Must be run on UiThread.
+     * Adds the Mini Controller at the bottom of Activity's layout.
+     * <b>Must be run on UiThread.</b>
+     *
+     * @param miniControllerLayout A custom MiniController fragment layout.
      */
     @UiThread
-    public void addMiniController() {
+    public void addMiniController(@LayoutRes int miniControllerLayout) {
         Activity theActivity = activity.get();
         if (theActivity == null) return;
 
         ViewGroup contentView = theActivity.findViewById(android.R.id.content);
+
         View rootView = contentView.getChildAt(0);
+
         LinearLayout linearLayout = new LinearLayout(theActivity);
-        LinearLayout.LayoutParams linearLayoutParams =
-                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+        LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
+
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setLayoutParams(linearLayoutParams);
 
@@ -246,11 +262,21 @@ public class Caster implements CasterPlayer.OnMediaLoadedListener {
 
         ViewGroup.LayoutParams oldRootParams = rootView.getLayoutParams();
         LinearLayout.LayoutParams rootParams = new LinearLayout.LayoutParams(oldRootParams.width, 0, 1f);
-        rootView.setLayoutParams(rootParams);
 
+        rootView.setLayoutParams(rootParams);
         linearLayout.addView(rootView);
-        theActivity.getLayoutInflater().inflate(R.layout.mini_controller, linearLayout, true);
+
+        theActivity.getLayoutInflater().inflate(miniControllerLayout, linearLayout, true);
+
         theActivity.setContentView(linearLayout);
+    }
+
+    /**
+     * Sets the expaned controls style
+     * @param style An instance of ExpandedControlsStyle class
+     */
+    public void setExpandedPlayerStyle(ExpandedControlsStyle style) {
+        Caster.expandedControlsStyle = style;
     }
 
     /**
@@ -271,10 +297,20 @@ public class Caster implements CasterPlayer.OnMediaLoadedListener {
         this.onCastSessionUpdatedListener = onCastSessionUpdatedListener;
     }
 
+    /**
+     * Sets {@link OnCastSessionProgressUpdateListener}
+     *
+     * @param onCastSessionProgressUpdateListener An instance of {@link OnCastSessionProgressUpdateListener}
+     */
     public void setOnCastSessionProgressUpdateListener(@Nullable OnCastSessionProgressUpdateListener onCastSessionProgressUpdateListener) {
         this.onCastSessionProgressUpdateListener = onCastSessionProgressUpdateListener;
     }
 
+    /**
+     * Sets {@link OnCastSessionStateChanged}
+     *
+     * @param onCastSessionStateChanged  An instance of {@link OnCastSessionStateChanged}
+     */
     public void setOnCastSessionStateChanged(@Nullable OnCastSessionStateChanged onCastSessionStateChanged) {
         this.onCastSessionStateChanged = onCastSessionStateChanged;
     }

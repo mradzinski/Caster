@@ -1,6 +1,8 @@
 package com.mradzinski.caster;
 
 import android.content.Context;
+
+import com.google.android.gms.cast.LaunchOptions;
 import com.google.android.gms.cast.framework.CastOptions;
 import com.google.android.gms.cast.framework.OptionsProvider;
 import com.google.android.gms.cast.framework.SessionProvider;
@@ -18,6 +20,8 @@ public class CastOptionsProvider implements OptionsProvider {
     @Override
     public CastOptions getCastOptions(Context context) {
         CastOptions customCastOptions = Caster.customCastOptions;
+        LaunchOptions customLaunchOptions = Caster.customLaunchOptions;
+
         if(customCastOptions == null) {
             List<String> buttonActions = createButtonActions();
             int[] compatButtonAction = { 1, 3 };
@@ -32,10 +36,13 @@ public class CastOptionsProvider implements OptionsProvider {
                     .setExpandedControllerActivityClassName(ExpandedControlsActivity.class.getName())
                     .build();
 
-            return new CastOptions.Builder()
+            CastOptions.Builder options = new CastOptions.Builder()
                     .setReceiverApplicationId(Caster.receiverId)
-                    .setCastMediaOptions(mediaOptions)
-                    .build();
+                    .setCastMediaOptions(mediaOptions);
+
+            if (customLaunchOptions != null) options.setLaunchOptions(customLaunchOptions);
+
+            return options.build();
         } else {
             return customCastOptions;
         }
