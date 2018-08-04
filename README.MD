@@ -15,7 +15,7 @@ dependencies {
 }
 ```
 ## Usage
-Caster requires Google Play Services and I assume that the target device has it installed (if not this example won't work).
+**Caster requires Google Play Services** and I assume that the target device has it installed (if not this example won't work).
 **If you need a Caster's working example you can check the project included with the library.**
 
 First, you need to initialize a Caster instance in every Activity you want to use it in:
