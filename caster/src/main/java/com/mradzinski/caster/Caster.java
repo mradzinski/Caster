@@ -57,6 +57,7 @@ public class Caster implements CasterPlayer.OnMediaLoadedListener {
     private CasterPlayer casterPlayer;
     private WeakReference<Activity> activity;
     private List<IntroductoryOverlay> introductionOverlays = new ArrayList<>();
+    private Long progressListenerInterval = 1000L;
 
     private boolean deliveredFinishStatus = false;
     private boolean deliveredPlayingVideo = false;
@@ -326,7 +327,21 @@ public class Caster implements CasterPlayer.OnMediaLoadedListener {
     }
 
     /**
-     * Sets {@link OnCastSessionProgressUpdateListener}
+     * Sets {@link OnCastSessionProgressUpdateListener} with a custom interval.
+     *
+     * @param interval The interval in ms for this listener to be called.
+     * @param onCastSessionProgressUpdateListener An instance of {@link OnCastSessionProgressUpdateListener}
+     */
+    public void setOnCastSessionProgressUpdateListener(Long interval, @Nullable OnCastSessionProgressUpdateListener onCastSessionProgressUpdateListener) {
+        this.onCastSessionProgressUpdateListener = onCastSessionProgressUpdateListener;
+        this.progressListenerInterval = interval;
+    }
+
+    /**
+     * Sets {@link OnCastSessionProgressUpdateListener} which will be called with a default interval of 1000 ms.
+     * To customize the interval this listener is called please use:
+     *
+     * <p><code>setOnCastSessionProgressUpdateListener(interval, callback)</code></p>
      *
      * @param onCastSessionProgressUpdateListener An instance of {@link OnCastSessionProgressUpdateListener}
      */
@@ -437,7 +452,7 @@ public class Caster implements CasterPlayer.OnMediaLoadedListener {
 
         if (onConnectChangeListener != null) onConnectChangeListener.onConnected();
         if (onCastSessionUpdatedListener != null) onCastSessionUpdatedListener.onCastSessionUpdated(castSession, true);
-        if (onCastSessionProgressUpdateListener != null) castSession.getRemoteMediaClient().addProgressListener(progressListener, 1000);
+        if (onCastSessionProgressUpdateListener != null) castSession.getRemoteMediaClient().addProgressListener(progressListener, progressListenerInterval);
         if (onCastSessionStateChanged != null) castSession.getRemoteMediaClient().registerCallback(mediaListener);
     }
 
