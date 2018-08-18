@@ -191,6 +191,15 @@ public class Caster implements CasterPlayer.OnMediaLoadedListener {
     }
 
     /**
+     * Gives access to {@link CastSession}, which allows to controll and get info of the current casting session
+     *
+     * @return the instance of {@link CastSession} handled by Caster or null if Chromecast is disconnected.
+     */
+    @Nullable  public CastSession getCastSession() {
+        return castSession;
+    }
+
+    /**
      * Checks if a Google Cast device is connected.
      *
      * @return true if a Google Cast is connected, false otherwise
@@ -427,7 +436,7 @@ public class Caster implements CasterPlayer.OnMediaLoadedListener {
         casterPlayer.setRemoteMediaClient(castSession.getRemoteMediaClient());
 
         if (onConnectChangeListener != null) onConnectChangeListener.onConnected();
-        if (onCastSessionUpdatedListener != null) onCastSessionUpdatedListener.onCastSessionUpdated(castSession);
+        if (onCastSessionUpdatedListener != null) onCastSessionUpdatedListener.onCastSessionUpdated(castSession, true);
         if (onCastSessionProgressUpdateListener != null) castSession.getRemoteMediaClient().addProgressListener(progressListener, 1000);
         if (onCastSessionStateChanged != null) castSession.getRemoteMediaClient().registerCallback(mediaListener);
     }
@@ -445,9 +454,10 @@ public class Caster implements CasterPlayer.OnMediaLoadedListener {
             } catch (Exception ignored){}
         }
 
-        this.castSession = null;
         if (onConnectChangeListener != null) onConnectChangeListener.onDisconnected();
-        if (onCastSessionUpdatedListener != null) onCastSessionUpdatedListener.onCastSessionUpdated(null);
+        if (onCastSessionUpdatedListener != null) onCastSessionUpdatedListener.onCastSessionUpdated(castSession, false);
+
+        this.castSession = null;
     }
 
     private Application.ActivityLifecycleCallbacks createActivityCallbacks() {
@@ -574,7 +584,7 @@ public class Caster implements CasterPlayer.OnMediaLoadedListener {
     }
 
     public interface OnCastSessionUpdatedListener {
-        void onCastSessionUpdated(CastSession castSession);
+        void onCastSessionUpdated(@NonNull CastSession castSession, Boolean isConnected);
     }
 
     public interface OnCastSessionProgressUpdateListener {
