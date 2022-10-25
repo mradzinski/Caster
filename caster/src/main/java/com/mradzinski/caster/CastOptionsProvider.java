@@ -12,13 +12,16 @@ import com.google.android.gms.cast.framework.media.NotificationOptions;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 @SuppressWarnings("unused")
 // Class is used and being referenced in the AndroidManifest.xml as value for
 // com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME
 public class CastOptionsProvider implements OptionsProvider {
 
+    @NonNull
     @Override
-    public CastOptions getCastOptions(Context context) {
+    public CastOptions getCastOptions(@NonNull Context context) {
         CastOptions customCastOptions = Caster.customCastOptions;
         LaunchOptions customLaunchOptions = Caster.customLaunchOptions;
 
@@ -56,7 +59,7 @@ public class CastOptionsProvider implements OptionsProvider {
     }
 
     @Override
-    public List<SessionProvider> getAdditionalSessionProviders(Context context) {
+    public List<SessionProvider> getAdditionalSessionProviders(@NonNull Context context) {
         return null;
     }
 }

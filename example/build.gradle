@@ -1,16 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    namespace 'com.mradzinski.casterexample'
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.mradzinski.casterexample"
         minSdkVersion 17
-        targetSdkVersion 27
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         release {

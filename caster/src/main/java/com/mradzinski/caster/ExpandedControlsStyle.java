@@ -10,9 +10,9 @@
 
 package com.mradzinski.caster;
 
-import android.support.annotation.ColorInt;
-
 import java.io.Serializable;
+
+import androidx.annotation.ColorInt;
 
 public class ExpandedControlsStyle implements Serializable {
     @ColorInt private int seekbarLineColor;

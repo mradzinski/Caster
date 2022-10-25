@@ -1,15 +1,18 @@
 package com.mradzinski.caster;
 
 import android.net.Uri;
-import android.support.annotation.IntDef;
 import android.text.TextUtils;
+
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.common.images.WebImage;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.IntDef;
 
 /**
  * Media information class
