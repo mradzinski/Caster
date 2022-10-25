@@ -1,7 +1,8 @@
 package com.mradzinski.caster;
 
-import android.support.annotation.NonNull;
 import com.google.android.gms.cast.MediaInfo;
+
+import androidx.annotation.NonNull;
 
 class CasterPlayerNoOp extends CasterPlayer {
     @Override

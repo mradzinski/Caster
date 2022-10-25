@@ -1,16 +1,16 @@
 package com.mradzinski.casterexample;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.MediaRouteButton;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
 import android.widget.Button;
 
 import com.mradzinski.caster.Caster;
 import com.mradzinski.caster.ExpandedControlsStyle;
 import com.mradzinski.caster.MediaData;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.mediarouter.app.MediaRouteButton;
 
 public class MainActivity extends AppCompatActivity {
     private static final String VIMEO_URL = "Your M3U URL goes here :)";
@@ -43,19 +43,11 @@ public class MainActivity extends AppCompatActivity {
         playButton = findViewById(R.id.button_play);
         resumeButton = findViewById(R.id.button_resume);
 
-        playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                caster.getPlayer().loadMediaAndPlay(createSampleMediaData());
-            }
-        });
+        playButton.setOnClickListener(v -> caster.getPlayer().loadMediaAndPlay(createSampleMediaData()));
 
-        resumeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (caster.getPlayer().isPaused()) {
-                    caster.getPlayer().togglePlayPause();
-                }
+        resumeButton.setOnClickListener(v -> {
+            if (caster.getPlayer().isPaused()) {
+                caster.getPlayer().togglePlayPause();
             }
         });
 

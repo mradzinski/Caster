@@ -1,14 +1,16 @@
 package com.mradzinski.caster;
 
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaLoadOptions;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+@SuppressWarnings("unused")
 public class CasterPlayer {
     private static final String TAG = "Caster";
 
